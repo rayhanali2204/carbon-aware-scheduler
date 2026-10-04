@@ -38,3 +38,28 @@ class TestScheduler(unittest.TestCase):
             start,
             datetime(2026, 1, 1, 13)
         )
+
+    def test_green_scheduler_rejects_missing_carbon_data(self):
+        carbon_data = load_carbon_data(
+            "data/carbon_intensity.csv"
+        )
+
+        missing_timestamp = datetime(2026, 1, 1, 14)
+        del carbon_data[missing_timestamp]
+
+        job = Job(
+            duration_hours=2,
+            earliest_start=datetime(2026, 1, 1, 9),
+            deadline=datetime(2026, 1, 1, 15),
+            power_kw=1.0
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "Missing carbon-intensity data"
+        ):
+            schedule_green(job, carbon_data)
+
+
+if __name__ == "__main__":
+    unittest.main()

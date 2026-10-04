@@ -22,6 +22,13 @@ def schedule_green(
 
         for hour in range(job.duration_hours):
             timestamp = current_start + timedelta(hours=hour)
+
+            if timestamp not in carbon_data:
+                raise ValueError(
+                    "Missing carbon-intensity data for "
+                    f"{timestamp}"
+                )
+            
             carbon_intensities.append(carbon_data[timestamp])
 
         emissions = calculate_job_emissions(
