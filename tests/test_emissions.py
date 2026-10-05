@@ -3,7 +3,7 @@ import unittest
 from src.emissions import calculate_job_emissions
 
 class TestEmissions(unittest.TestCase):
-    def test_baseline_emssions(self):
+    def test_baseline_emissions(self):
         emissions = calculate_job_emissions(
             1.0,
             [220, 250]
